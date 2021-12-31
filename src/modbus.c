@@ -27,6 +27,11 @@
 #include <string.h>
 #include <errno.h>
 
+// Change Previder
+#include <unistd.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include "datatype.h"
 #include "endianness.h"
 #include "semaphores.h"
@@ -273,6 +278,13 @@ int zbx_modbus_read_registers(AGENT_REQUEST *request, AGENT_RESULT *result)
 
 	// read part
 
+
+	// Sleep random time
+	srand (time(NULL));
+	int sleepTimer = rand() % 3500 + 100;
+	usleep(sleepTimer);
+
+
 	void *tab_reg;	// temp vars
 
 	tab_reg = malloc(regs_to_read * reg_size);
@@ -298,6 +310,7 @@ int zbx_modbus_read_registers(AGENT_REQUEST *request, AGENT_RESULT *result)
 			UNLOCK_PORT(lock_key);
 		return SYSINFO_RET_FAIL;
 	}
+	
 
 	int rc;	// modbus return_code
 	switch (function)
